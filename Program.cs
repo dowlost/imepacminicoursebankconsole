@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace IMEPAC.Curso.Console
@@ -45,7 +46,7 @@ namespace IMEPAC.Curso.Console
 
                 if (operationType <= 0 || operationType > 4)
                 {
-                    System.Console.WriteLine("Operação inválida! A aplicação será finalizada...\n");
+                    System.Console.WriteLine("Operação inválida!\n");
                     System.Console.ReadLine();
 
                     System.Console.WriteLine(next);
@@ -56,15 +57,15 @@ namespace IMEPAC.Curso.Console
 
                     System.Console.WriteLine("Iniciando processo de abertura de conta. Por favor, responda abaixo: \n\n");
 
-                    System.Console.WriteLine("Qual o seu primeiro nome? \n");
+                    System.Console.WriteLine("Qual o seu primeiro nome?");
                     account.FirstName = System.Console.ReadLine();
                     System.Console.WriteLine(next);
 
-                    System.Console.WriteLine("Qual o seu sobrenome? \n");
+                    System.Console.WriteLine("Qual o seu sobrenome?");
                     account.LastName = System.Console.ReadLine();
                     System.Console.WriteLine(next);
 
-                    System.Console.WriteLine("Qual o valor inicial para depósito? \n");
+                    System.Console.WriteLine("Qual o valor inicial para depósito?");
                     var accountMoney = 0;
                     Int32.TryParse(System.Console.ReadLine(), out accountMoney);
                     account.Money = accountMoney;
@@ -84,6 +85,40 @@ namespace IMEPAC.Curso.Console
 
                     System.Console.WriteLine(next);
                 }
+                else if (operationType == 3)
+                {
+                    System.Console.WriteLine("Abrindo processo de pedido de empréstimo... \n\n");
+
+                    System.Console.WriteLine("Qual o primeiro nome do requisitor?");
+                    var firstname = System.Console.ReadLine();
+
+                    System.Console.WriteLine("Qual o sobrenome do requisitor?");
+                    var lastname = System.Console.ReadLine();
+
+                    System.Console.WriteLine("Qual o valor do empréstimo?");
+                    var loanAmountInput = System.Console.ReadLine();
+                    var loanAmount = 0;
+                    Int32.TryParse(loanAmountInput, out loanAmount);
+
+                    var account = accounts
+                            .Where(x => x.FirstName.ToLower() == firstname.ToLower() &&
+                                    x.LastName.ToLower() == lastname.ToLower()).FirstOrDefault();
+
+                    if (account == null)
+                        System.Console.WriteLine("Não foi encontrada uma conta para o nome informado.");
+
+                    if (loanAmount <= 0)
+                        System.Console.WriteLine("Valor inválido");
+                    else
+                    {
+                        if (loanAmount < account.Money)
+                            System.Console.WriteLine("Pedido aberto com sucesso, o requisitor possui todos os requisitos para o empréstimo.");
+                        else
+                            System.Console.WriteLine("Pedido de empréstimo recusado.");
+                    }
+                    System.Console.WriteLine(next);
+                }
+
             } while (operationType != 4);
 
 
