@@ -32,7 +32,7 @@ namespace IMEPAC.Curso.Console.Services
         /// <param name="firstname"></param>
         /// <param name="lastname"></param>
         /// <param name="money"></param>
-        public void TryOpenAccount(string firstname, string lastname, int money)
+        public async Task TryOpenAccount(string firstname, string lastname, int money)
         {
             var account = _builder.SetFirstName(firstname)
                 .SetLastName(lastname)
@@ -41,7 +41,7 @@ namespace IMEPAC.Curso.Console.Services
 
             if (ValidateAccount(account))
             {
-                _repository.Insert(account);
+                await _repository.Insert(account);
                 ConsoleUtils.PrintMessage("Conta aberta com sucesso!");
             }
         }
